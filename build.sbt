@@ -4,7 +4,11 @@ version := "0.1"
 
 scalaVersion := "2.11.12"
 
+enablePlugins(LagomScala)
+
 libraryDependencies ++=
-  "org.apache.spark" %% "spark-core" % "2.3.1" ::
-  "org.apache.spark" %% "spark-sql" % "2.3.1" ::
+  lagomScaladslApi ::
     Nil
+
+lagomCassandraEnabled := false
+lagomKafkaEnabled := false
