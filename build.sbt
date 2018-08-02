@@ -11,3 +11,8 @@ libraryDependencies ++=
     "com.typesafe.akka" %% "akka-http-testkit" % "10.1.3" % Test ::
     "org.scalatest" %% "scalatest" % "3.0.5" % Test ::
     Nil
+
+enablePlugins(JavaAppPackaging)
+
+dockerBaseImage := "openjdk"
+dockerExposedPorts ++= Seq(8000)
