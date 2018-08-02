@@ -15,7 +15,9 @@ object Service extends App {
   implicit val materializer: ActorMaterializer = ActorMaterializer()
   implicit val executionContext: ExecutionContextExecutor = actorSystem.dispatcher
 
-  val server = Http().bindAndHandle(route, "localhost", 8000)
+  val server = Http().bindAndHandle(route, "0.0.0.0", 8000).recoverWith {
+    case _ => sys.exit(1)
+  }
 
   sys.addShutdownHook(server.map(_.unbind()))
 }
