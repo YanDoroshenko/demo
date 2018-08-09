@@ -1,14 +1,20 @@
-name := "demo"
+version in ThisBuild := "0.1"
 
-version := "0.1"
+scalaVersion in ThisBuild := "2.12.6"
 
-scalaVersion := "2.11.12"
+lazy val root = (project in file("."))
+  .settings(name := "demo")
+  .aggregate(helloServiceApi, helloServiceImpl)
+  .settings(commonSettings: _*)
 
-enablePlugins(LagomScala)
+lazy val helloServiceApi = (project in file("hello-service-api"))
+  .settings(libraryDependencies += lagomScaladslApi)
+  .settings(commonSettings: _*)
 
-libraryDependencies ++=
-  lagomScaladslApi ::
-    Nil
+lazy val helloServiceImpl = (project in file("hello-service-impl"))
+  .dependsOn(helloServiceApi)
+  .settings(libraryDependencies ++= Seq(lagomScaladslApi))
+  .enablePlugins(LagomScala, SbtReactiveAppPlugin)
+  .settings(commonSettings: _*)
 
-lagomCassandraEnabled := false
-lagomKafkaEnabled := false
+def commonSettings: Seq[Setting[_]] = Seq()
