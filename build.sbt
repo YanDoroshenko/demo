@@ -13,8 +13,19 @@ lazy val helloServiceApi = (project in file("hello-service-api"))
 
 lazy val helloServiceImpl = (project in file("hello-service-impl"))
   .dependsOn(helloServiceApi)
-  .settings(libraryDependencies ++= Seq(lagomScaladslApi))
+  .settings(libraryDependencies += lagomScaladslApi)
   .enablePlugins(LagomScala, SbtReactiveAppPlugin)
   .settings(commonSettings: _*)
+
+lazy val webGateway = (project in file("web-gateway"))
+  .dependsOn(helloServiceApi)
+  .settings(
+    libraryDependencies ++= Seq(
+      lagomScaladslServer,
+      "com.softwaremill.macwire" %% "macros" % "2.3.0" % "provided"
+    ),
+    httpIngressPaths := Seq("/")
+  )
+  .enablePlugins(PlayScala, LagomPlay, SbtReactiveAppPlugin)
 
 def commonSettings: Seq[Setting[_]] = Seq()
