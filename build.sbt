@@ -13,7 +13,13 @@ lazy val helloServiceApi = (project in file("hello-service-api"))
 
 lazy val helloServiceImpl = (project in file("hello-service-impl"))
   .dependsOn(helloServiceApi)
-  .settings(libraryDependencies += lagomScaladslApi)
+  .settings(
+    libraryDependencies ++=
+      lagomScaladslApi ::
+        lagomScaladslTestKit ::
+        "org.scalatest" %% "scalatest" % "3.0.1" % Test ::
+        Nil
+  )
   .enablePlugins(LagomScala, SbtReactiveAppPlugin)
   .settings(commonSettings: _*)
 
